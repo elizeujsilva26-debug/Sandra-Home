@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio da Sandra — Agendamentos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF5F1;
+    --card:#FFFFFF;
+    --ink:#2B1E22;
+    --ink-soft:#7A686D;
+    --rose:#AE3A5C;
+    --rose-deep:#7D2740;
+    --rose-mist:#F6E4E9;
+    --gold:#C69A3D;
+    --sage:#6E8168;
+    --sage-mist:#EAF0E7;
+    --line:#E8DCD5;
+    --danger:#B23B3B;
+    --danger-mist:#F6E3E1;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Manrope',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 0 60px;}
+  header.hero{
+    padding:36px 24px 0;
+    text-align:center;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--rose);
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-style:italic;
+    font-size:36px;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  .tagline{
+    color:var(--ink-soft);
+    font-size:15px;
+    margin:0 0 24px;
+  }
+  .snip-edge{
+    height:16px;
+    background:
+      linear-gradient(135deg, var(--rose) 25%, transparent 25%) 0 0/16px 16px,
+      linear-gradient(225deg, var(--rose) 25%, transparent 25%) 0 0/16px 16px;
+    background-repeat:repeat-x;
+    opacity:.85;
+  }
+  .tabbar{
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    margin:22px auto 0;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:5px;
+    max-width:320px;
+  }
+  .tabbtn{
+    flex:1;
+    border:none;
+    background:transparent;
+    padding:10px 14px;
+    border-radius:999px;
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:.2s;
+  }
+  .tabbtn.active{
+    background:var(--rose);
+    color:#fff;
+  }
+  main{padding:24px;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px;
+    margin-bottom:16px;
+  }
+  .card h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:20px;
+    margin:0 0 4px;
+  }
+  .card .sub{
+    color:var(--ink-soft);
+    font-size:13.5px;
+    margin:0 0 16px;
+  }
+  label{
+    display:block;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin:0 0 6px;
+  }
+  input[type=text],input[type=tel],input[type=date],input[type=time]{
+    width:100%;
+    padding:11px 12px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    font-family:'Manrope',sans-serif;
+    font-size:15px;
+    color:var(--ink);
+    background:#fff;
+    margin-bottom:14px;
+  }
+  input:focus{outline:2px solid var(--rose); outline-offset:1px; border-color:var(--rose);}
+  .field-row{display:flex; gap:10px;}
+  .field-row > div{flex:1;}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px;}
+  .chip{
+    padding:9px 14px;
+    border-radius:999px;
+    border:1.5px solid var(--line);
+    background:#fff;
+    font-weight:700;
+    font-size:13.5px;
+    cursor:pointer;
+    color:var(--ink);
+    transition:.15s;
+  }
+  .chip:hover{border-color:var(--rose);}
+  .chip.selected{background:var(--rose); border-color:var(--rose); color:#fff;}
+  .empty{
+    color:var(--ink-soft);
+    font-size:14px;
+    padding:18px 4px;
+    text-align:center;
+    font-style:italic;
+    font-family:'Fraunces',serif;
+  }
+  button.primary{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    background:var(--rose);
+    color:#fff;
+    font-family:'Manrope',sans-serif;
+    font-weight:800;
+    font-size:15px;
+    cursor:pointer;
+    transition:.15s;
+  }
+  button.primary:hover{background:var(--rose-deep);}
+  button.primary:disabled{background:#D9C8CD; cursor:not-allowed;}
+  button.ghost{
+    width:100%;
+    padding:11px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    background:transparent;
+    color:var(--ink);
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+  }
+  button.small-danger{
+    padding:7px 12px;
+    border:none;
+    border-radius:8px;
+    background:var(--danger-mist);
+    color:var(--danger);
+    font-weight:700;
+    font-size:12.5px;
+    cursor:pointer;
+  }
+  button.small-ghost{
+    padding:7px 12px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    background:#fff;
+    color:var(--ink);
+    font-weight:700;
+    font-size:12.5px;
+    cursor:pointer;
+  }
+  .appt-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:12px 0;
+    border-top:1px solid var(--line);
+  }
+  .appt-item:first-child{border-top:none;}
+  .appt-date{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:15px;
+  }
+  .appt-name{font-size:13px; color:var(--ink-soft);}
+  .appt-actions{display:flex; gap:6px;}
+  .slot-group{margin-bottom:10px;}
+  .slot-group-title{
+    font-weight:800;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+    text-transform:capitalize;
+  }
+  .banner{
+    padding:14px 16px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:16px;
+  }
+  .banner.ok{background:var(--sage-mist); color:var(--sage);}
+  .banner.err{background:var(--danger-mist); color:var(--danger);}
+  .pin-box{
+    max-width:280px;
+    margin:60px auto;
+    text-align:center;
+  }
+  .pin-box .scissor{font-size:34px; margin-bottom:8px;}
+  .sound-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--rose-mist);
+    padding:12px 14px;
+    border-radius:10px;
+    margin-bottom:16px;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--rose-deep);
+  }
+  .sound-toggle button{
+    border:none;
+    background:var(--rose);
+    color:#fff;
+    padding:7px 12px;
+    border-radius:8px;
+    font-weight:800;
+    font-size:12.5px;
+    cursor:pointer;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--sage);display:inline-block;margin-right:6px;}
+  footer{text-align:center; color:var(--ink-soft); font-size:12px; padding:20px; opacity:.7;}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Cabelo &amp; cuidado, na casa da Sandra</div>
+    <h1>Studio da Sandra</h1>
+    <p class="tagline">Marque, remarque ou cancele seu horário em segundos.</p>
+  </header>
+  <div class="snip-edge"></div>
+
+  <div class="tabbar">
+    <button class="tabbtn" id="tab-client" onclick="setView('client')">Sou cliente</button>
+    <button class="tabbtn" id="tab-admin" onclick="setView('admin')">Sou a Sandra</button>
+  </div>
+
+  <main id="main"></main>
+  <footer>Studio da Sandra — agendamento simples, feito com carinho.</footer>
+</div>
+
+<script>
+const ADMIN_PIN = "1234";
+let view = "client";
+let adminAuthed = false;
+let soundOn = false;
+let audioCtx = null;
+let lastApptIds = null;
+let pollTimer = null;
+let clientSelectedDate = null;
+let clientSelectedSlotId = null;
+let banner = null; // {type,text} shown once then cleared
+
+// ---------- storage helpers ----------
+async function getSlots(){
+  try{
+    const r = await window.storage.get('slots', true);
+    return r ? JSON.parse(r.value) : [];
+  }catch(e){ return []; }
+}
+async function setSlots(list){
+  try{ await window.storage.set('slots', JSON.stringify(list), true); }catch(e){}
+}
+async function getAppts(){
+  try{
+    const r = await window.storage.get('appointments', true);
+    return r ? JSON.parse(r.value) : [];
+  }catch(e){ return []; }
+}
+async function setAppts(list){
+  try{ await window.storage.set('appointments', JSON.stringify(list), true); }catch(e){}
+}
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function todayStr(){ const d=new Date(); return d.toISOString().slice(0,10); }
+function dayLabel(dateStr){
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('pt-BR', {weekday:'short', day:'2-digit', month:'short'});
+}
+function timeLabel(t){ return t; }
+
+// ---------- sound ----------
+function ensureAudio(){
+  if(!audioCtx){
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+}
+function beep(freq, start, dur, type='sine'){
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0.0001, audioCtx.currentTime + start);
+  gain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + start + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + start + dur);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start(audioCtx.currentTime + start);
+  osc.stop(audioCtx.currentTime + start + dur + 0.05);
+}
+function playBookedSound(){ ensureAudio(); beep(620,0,0.14); beep(900,0.15,0.18); }
+function playCancelledSound(){ ensureAudio(); beep(500,0,0.16); beep(320,0.17,0.22); }
+
+async function pollForChanges(){
+  const appts = await getAppts();
+  const ids = new Set(appts.map(a=>a.id));
+  if(lastApptIds){
+    let added=false, removed=false;
+    ids.forEach(id=>{ if(!lastApptIds.has(id)) added=true; });
+    lastApptIds.forEach(id=>{ if(!ids.has(id)) removed=true; });
+    if(added) playBookedSound();
+    else if(removed) playCancelledSound();
+    if(added||removed) renderAdmin();
+  }
+  lastApptIds = ids;
+}
+function startPolling(){
+  if(pollTimer) return;
+  pollTimer = setInterval(pollForChanges, 5000);
+}
+
+// ---------- view switching ----------
+function setView(v){
+  view = v;
+  document.getElementById('tab-client').classList.toggle('active', v==='client');
+  document.getElementById('tab-admin').classList.toggle('active', v==='admin');
+  render();
+}
+
+function showBanner(type, text){
+  banner = {type, text};
+  setTimeout(()=>{ banner=null; if(view==='client') renderClient(); else renderAdmin(); }, 3800);
+}
+
+// ---------- CLIENT VIEW ----------
+async function renderClient(){
+  const main = document.getElementById('main');
+  const slots = await getSlots();
+  const future = slots.filter(s => s.date >= todayStr()).sort((a,b)=> (a.date+a.time).localeCompare(b.date+b.time));
+  const byDate = {};
+  future.forEach(s=>{ (byDate[s.date] = byDate[s.date] || []).push(s); });
+  const dates = Object.keys(byDate).sort();
+
+  if(clientSelectedDate && !dates.includes(clientSelectedDate)){
+    clientSelectedDate = null; clientSelectedSlotId = null;
+  }
+
+  let html = '';
+  if(banner) html += `<div class="banner ${banner.type}">${banner.text}</div>`;
+
+  html += `<div class="card">
+    <h2>Escolher horário</h2>
+    <p class="sub">Selecione um dia disponível e depois um horário.</p>`;
+
+  if(dates.length === 0){
+    html += `<div class="empty">Nenhum horário disponível no momento.<br>Sandra ainda vai liberar novas datas.</div>`;
+  } else {
+    html += `<div class="chips" id="dateChips">`;
+    dates.forEach(d=>{
+      html += `<button class="chip ${clientSelectedDate===d?'selected':''}" onclick="pickDate('${d}')">${dayLabel(d)}</button>`;
+    });
+    html += `</div>`;
+
+    if(clientSelectedDate){
+      html += `<div class="chips" id="timeChips" style="margin-top:12px;">`;
+      byDate[clientSelectedDate].forEach(s=>{
+        html += `<button class="chip ${clientSelectedSlotId===s.id?'selected':''}" onclick="pickSlot('${s.id}')">${timeLabel(s.time)}</button>`;
+      });
+      html += `</div>`;
+    }
+  }
+  html += `</div>`;
+
+  if(clientSelectedSlotId){
+    html += `<div class="card">
+      <h2>Seus dados</h2>
+      <p class="sub">Só pra confirmar direitinho quem é você.</p>
+      <label>Nome</label>
+      <input type="text" id="clientName" placeholder="Seu nome">
+      <label>WhatsApp / telefone</label>
+      <input type="tel" id="clientPhone" placeholder="(31) 9 9999-9999">
+      <button class="primary" onclick="confirmBooking()">Confirmar agendamento</button>
+    </div>`;
+  }
+
+  html += `<div class="card">
+    <h2>Cancelar um horário marcado</h2>
+    <p class="sub">Digite o telefone usado no agendamento.</p>
+    <div class="field-row">
+      <div><input type="tel" id="lookupPhone" placeholder="(31) 9 9999-9999"></div>
+    </div>
+    <button class="ghost" onclick="lookupAppointments()">Buscar meus horários</button>
+    <div id="lookupResults"></div>
+  </div>`;
+
+  main.innerHTML = html;
+}
+
+function pickDate(d){ clientSelectedDate = d; clientSelectedSlotId = null; renderClient(); }
+function pickSlot(id){ clientSelectedSlotId = id; renderClient(); }
+
+async function confirmBooking(){
+  const name = document.getElementById('clientName').value.trim();
+  const phone = document.getElementById('clientPhone').value.trim();
+  if(!name || !phone){
+    showBanner('err','Preencha seu nome e telefone antes de confirmar.');
+    renderClient();
+    return;
+  }
+  const slots = await getSlots();
+  const slot = slots.find(s=>s.id===clientSelectedSlotId);
+  if(!slot){
+    showBanner('err','Esse horário acabou de ser reservado por outra pessoa. Escolha outro.');
+    clientSelectedSlotId = null;
+    renderClient();
+    return;
+  }
+  const newSlots = slots.filter(s=>s.id!==slot.id);
+  await setSlots(newSlots);
+  const appts = await getAppts();
+  appts.push({id:uid(), date:slot.date, time:slot.time, name, phone, createdAt:Date.now()});
+  await setAppts(appts);
+  clientSelectedDate = null; clientSelectedSlotId = null;
+  showBanner('ok', `Horário confirmado para ${dayLabel(slot.date)} às ${slot.time}. Até lá!`);
+  renderClient();
+}
+
+async function lookupAppointments(){
+  const phone = document.getElementById('lookupPhone').value.trim();
+  const box = document.getElementById('lookupResults');
+  if(!phone){ box.innerHTML = ''; return; }
+  const appts = await getAppts();
+  const mine = appts.filter(a=>a.phone.replace(/\D/g,'') === phone.replace(/\D/g,''))
+                     .sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  if(mine.length===0){
+    box.innerHTML = `<div class="empty">Nenhum horário encontrado com esse telefone.</div>`;
+    return;
+  }
+  let html = '';
+  mine.forEach(a=>{
+    html += `<div class="appt-item">
+      <div><div class="appt-date">${dayLabel(a.date)} · ${a.time}</div><div class="appt-name">${a.name}</div></div>
+      <div class="appt-actions"><button class="small-danger" onclick="cancelAsClient('${a.id}','${phone}')">Cancelar</button></div>
+    </div>`;
+  });
+  box.innerHTML = html;
+}
+
+async function cancelAsClient(id, phone){
+  const appts = await getAppts();
+  const appt = appts.find(a=>a.id===id);
+  if(!appt) return;
+  const remaining = appts.filter(a=>a.id!==id);
+  await setAppts(remaining);
+  const slots = await getSlots();
+  slots.push({id:uid(), date:appt.date, time:appt.time});
+  await setSlots(slots);
+  showBanner('ok','Horário cancelado. Esperamos você em outra data!');
+  renderClient();
+  setTimeout(()=>lookupAppointments(), 0);
+  const input = document.getElementById('lookupPhone');
+  if(input) input.value = phone;
+}
+
+// ---------- ADMIN VIEW ----------
+async function renderAdmin(){
+  const main = document.getElementById('main');
+  if(!adminAuthed){
+    main.innerHTML = `<div class="pin-box">
+      <div class="scissor">✂️</div>
+      <h2 style="font-family:'Fraunces',serif;font-weight:600;">Área da Sandra</h2>
+      <p class="sub" style="margin-bottom:16px;">Digite seu PIN para gerenciar os horários.</p>
+      <input type="text" id="pinInput" placeholder="PIN" style="text-align:center;letter-spacing:.3em;">
+      <button class="primary" onclick="tryPin()">Entrar</button>
+      <p style="font-size:12px;color:var(--ink-soft);margin-top:10px;">PIN padrão: 1234</p>
+    </div>`;
+    return;
+  }
+
+  const slots = (await getSlots()).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  const appts = (await getAppts()).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  lastApptIds = new Set(appts.map(a=>a.id));
+
+  let html = '';
+  if(banner) html += `<div class="banner ${banner.type}">${banner.text}</div>`;
+
+  html += `<div class="sound-toggle">
+    <span><span class="dot" style="background:${soundOn?'#6E8168':'#C9A3AC'}"></span>${soundOn? 'Aviso sonoro ativado' : 'Ative o aviso sonoro de novos agendamentos'}</span>
+    ${soundOn ? '' : '<button onclick="enableSound()">Ativar som</button>'}
+  </div>`;
+
+  html += `<div class="card">
+    <h2>Liberar horário</h2>
+    <p class="sub">Adicione datas e horários para as clientes marcarem.</p>
+    <div class="field-row">
+      <div><label>Data</label><input type="date" id="newSlotDate" min="${todayStr()}"></div>
+      <div><label>Horário</label><input type="time" id="newSlotTime"></div>
+    </div>
+    <button class="primary" onclick="addSlot()">Adicionar horário</button>
+  </div>`;
+
+  html += `<div class="card"><h2>Horários disponíveis</h2><p class="sub">Ainda não reservados.</p>`;
+  const futureSlots = slots.filter(s=>s.date>=todayStr());
+  if(futureSlots.length===0){
+    html += `<div class="empty">Nenhum horário livre no momento.</div>`;
+  } else {
+    const byDate = {};
+    futureSlots.forEach(s=>{ (byDate[s.date]=byDate[s.date]||[]).push(s); });
+    Object.keys(byDate).sort().forEach(d=>{
+      html += `<div class="slot-group"><div class="slot-group-title">${dayLabel(d)}</div><div class="chips">`;
+      byDate[d].forEach(s=>{
+        html += `<span class="chip" style="cursor:default;">${s.time} <span style="cursor:pointer;color:var(--danger);margin-left:6px;" onclick="removeSlot('${s.id}')">✕</span></span>`;
+      });
+      html += `</div></div>`;
+    });
+  }
+  html += `</div>`;
+
+  html += `<div class="card"><h2>Agendamentos marcados</h2><p class="sub">${appts.length} no total.</p>`;
+  if(appts.length===0){
+    html += `<div class="empty">Nenhum agendamento ainda.</div>`;
+  } else {
+    appts.forEach(a=>{
+      html += `<div class="appt-item">
+        <div><div class="appt-date">${dayLabel(a.date)} · ${a.time}</div><div class="appt-name">${a.name} · ${a.phone}</div></div>
+        <div class="appt-actions">
+          <button class="small-ghost" onclick="openReschedule('${a.id}')">Remarcar</button>
+          <button class="small-danger" onclick="cancelAsAdmin('${a.id}')">Cancelar</button>
+        </div>
+      </div>
+      <div id="resched-${a.id}"></div>`;
+    });
+  }
+  html += `</div>`;
+
+  main.innerHTML = html;
+  startPolling();
+}
+
+async function tryPin(){
+  const val = document.getElementById('pinInput').value.trim();
+  if(val === ADMIN_PIN){
+    adminAuthed = true;
+    renderAdmin();
+  } else {
+    showBanner('err','PIN incorreto.');
+    renderAdmin();
+  }
+}
+
+function enableSound(){
+  ensureAudio();
+  beep(700,0,0.12);
+  soundOn = true;
+  renderAdmin();
+}
+
+async function addSlot(){
+  const date = document.getElementById('newSlotDate').value;
+  const time = document.getElementById('newSlotTime').value;
+  if(!date || !time){
+    showBanner('err','Escolha data e horário.');
+    renderAdmin();
+    return;
+  }
+  const slots = await getSlots();
+  slots.push({id:uid(), date, time});
+  await setSlots(slots);
+  showBanner('ok','Horário liberado para as clientes.');
+  renderAdmin();
+}
+
+async function removeSlot(id){
+  const slots = await getSlots();
+  await setSlots(slots.filter(s=>s.id!==id));
+  renderAdmin();
+}
+
+async function cancelAsAdmin(id){
+  const appts = await getAppts();
+  const appt = appts.find(a=>a.id===id);
+  if(!appt) return;
+  await setAppts(appts.filter(a=>a.id!==id));
+  const slots = await getSlots();
+  slots.push({id:uid(), date:appt.date, time:appt.time});
+  await setSlots(slots);
+  showBanner('ok', `Agendamento de ${appt.name} cancelado.`);
+  renderAdmin();
+}
+
+function openReschedule(id){
+  const box = document.getElementById('resched-'+id);
+  box.innerHTML = `<div style="padding:10px 0 6px;">
+    <div class="field-row">
+      <div><input type="date" id="rs-date-${id}" min="${todayStr()}"></div>
+      <div><input type="time" id="rs-time-${id}"></div>
+    </div>
+    <button class="ghost" onclick="confirmReschedule('${id}')">Salvar novo horário</button>
+  </div>`;
+}
+
+async function confirmReschedule(id){
+  const date = document.getElementById('rs-date-'+id).value;
+  const time = document.getElementById('rs-time-'+id).value;
+  if(!date || !time) return;
+  const appts = await getAppts();
+  const appt = appts.find(a=>a.id===id);
+  if(!appt) return;
+  const oldDate = appt.date, oldTime = appt.time;
+  appt.date = date; appt.time = time;
+  await setAppts(appts);
+  const slots = await getSlots();
+  slots.push({id:uid(), date:oldDate, time:oldTime});
+  const newSlots = slots.filter(s=>!(s.date===date && s.time===time));
+  await setSlots(newSlots);
+  showBanner('ok', `Remarcado para ${dayLabel(date)} às ${time}.`);
+  renderAdmin();
+}
+
+// ---------- boot ----------
+function render(){
+  if(view==='client') renderClient();
+  else renderAdmin();
+}
+setView('client');
+</script>
+</body>
+</html>
